@@ -6,13 +6,16 @@ PODS:
   - ReactiveCocoa/no-arc (2.5)
   - ReactiveCocoa/UI (2.5):
     - ReactiveCocoa/Core
+  - Toast (3.1.0)
 
 DEPENDENCIES:
   - ReactiveCocoa (~> 2.5)
+  - Toast (~> 3.0)
 
 SPEC CHECKSUMS:
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  Toast: 14a93686d6c8bfe2727afd342414e35660a8a1f3
 
-PODFILE CHECKSUM: 48b90c89499b2edf7ef7739b31bdbd8ec5dd3fd4
+PODFILE CHECKSUM: 8f2e501cfed2d32aa069ae7a488bd0c261809cf2
 
 COCOAPODS: 1.2.1

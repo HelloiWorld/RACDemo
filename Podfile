@@ -11,5 +11,6 @@ target 'RACDemo' do
   # Pods for RACDemo
   
   pod 'ReactiveCocoa', '~> 2.5’, :inhibit_warnings => true
+  pod 'Toast', '~> 3.0'
 
 end
