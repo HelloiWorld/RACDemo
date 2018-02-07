@@ -80,7 +80,6 @@
 }
 
 typedef void (^RWSignInResponse)(NSError *error, id result);
-
 - (void)signInWithUsername:(NSString *)username
                   password:(NSString *)password
                   complete:(RWSignInResponse)completeBlock {

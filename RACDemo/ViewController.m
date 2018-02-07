@@ -45,7 +45,7 @@ static NSInteger const timeLimit = 10;
 - (void)bind {
     @weakify(self);
     
-    // 限制输入数字和长度
+    //限制输入数字和长度
     [self.phoneTextField.rac_textSignal subscribeNext:^(NSString *x) {
         NSLog(@"phone number: %@", x);
         @strongify(self);
