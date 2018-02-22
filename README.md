@@ -1,4 +1,4 @@
-# 用RAC的思想替换Objc代码
+# 用RAC的思想替换ObjC代码
 
 比如objc有这样一段代码，用来限制输入UITextField只允许输入数字，并限制位数
 
@@ -85,7 +85,9 @@ oc中根据多个条件动态改变按钮的状态是很麻烦的事，常常要
         UIImage *image = [x boolValue] ? [UIImage imageNamed: @"同意协议"] : [UIImage imageNamed: @"不同意协议"];
         [self.protocolCheckBtn setImage:image forState:UIControlStateNormal];
     }];
-    
+
+用链式写法尽可能的将登录逻辑收拢在一起，增强可读性 
+
     //点击登录
     [[[[[self.enterBtn rac_signalForControlEvents:UIControlEventTouchUpInside] 
         filter:^BOOL(id value) {
@@ -129,7 +131,7 @@ oc中根据多个条件动态改变按钮的状态是很麻烦的事，常常要
     completeBlock(YES);
     }
     
-倒计时无需再使用`NSTimer`以及`dispatch_source_set_timer`
+倒计时可以写得更加优雅，无需再考虑销毁问题
 
     //点击开始倒计时，手机号校验合法才允许点击
     self.countDownBtn.rac_command = [[RACCommand alloc] initWithEnabled:validUsernameSignal signalBlock:^RACSignal *(id input) {
@@ -145,10 +147,10 @@ oc中根据多个条件动态改变按钮的状态是很麻烦的事，常常要
         if (self.remainTime == 0) {
             [self.countDownBtn setTitle:@"重新发送" forState:UIControlStateNormal];
             [self.countDownBtn setTitle:@"重新发送" forState:UIControlStateDisabled];
-            self.countDownBtn.enabled = YES;
+            // self.countDownBtn.enabled = YES;
         } else {
             [self.countDownBtn setTitle:[NSString stringWithFormat:@"%ld", (long)self.remainTime--] forState:UIControlStateDisabled];
-            self.countDownBtn.enabled = NO;// 倒计时期间不可点击
+            // self.countDownBtn.enabled = NO;// 倒计时期间不可点击
         }
     }] takeUntil:self.rac_willDeallocSignal];
     }
