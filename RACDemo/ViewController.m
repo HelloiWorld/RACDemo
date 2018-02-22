@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import <ReactiveCocoa.h>
 #import <UIView+Toast.h>
+#import <SVProgressHUD.h>
 #import "Util.h"
 #import "NSString+Util.h"
 
@@ -91,8 +92,10 @@ static NSInteger const timeLimit = 10;
                       reduce:^id(NSNumber *usernameValid, NSNumber *passwordValid){
                           return @([usernameValid boolValue] && [passwordValid boolValue]);
                       }];
-    [signUpActiveSignal subscribeNext:^(NSNumber*signupActive) {
+//    RAC(self.enterBtn, enabled) = signUpActiveSignal;
+    [signUpActiveSignal subscribeNext:^(NSNumber *signupActive) {
         @strongify(self);
+        //不完全等同于RAC(self.enterBtn, enabled) = signUpActiveSignal;因为这里不会再创建新的信号
         self.enterBtn.enabled = [signupActive boolValue];
         self.enterBtn.backgroundColor = [signupActive boolValue] ? [UIColor blueColor] : [UIColor grayColor];
     }];
@@ -103,6 +106,7 @@ static NSInteger const timeLimit = 10;
         self.isUserProtocolChecked = !self.isUserProtocolChecked;
     }];
     [RACObserve(self, isUserProtocolChecked) subscribeNext:^(NSNumber *x) {
+        @strongify(self);
         UIImage *image = [x boolValue] ? [UIImage imageNamed: @"同意协议"] : [UIImage imageNamed: @"不同意协议"];
         [self.protocolCheckBtn setImage:image forState:UIControlStateNormal];
     }];
@@ -118,14 +122,17 @@ static NSInteger const timeLimit = 10;
     }] doNext:^(id x) {
         @strongify(self);
         self.enterBtn.enabled = NO;
+        [SVProgressHUD show];
     }] flattenMap:^RACStream *(id value) {
         @strongify(self);
         return [self signInSignal];
     }] subscribeNext:^(NSNumber *signedIn){
         @strongify(self);
         self.enterBtn.enabled = YES;
+        [SVProgressHUD dismiss];
         BOOL success = [signedIn boolValue];
         if (success) {
+            [SVProgressHUD showSuccessWithStatus:@"登录成功"];
             [self performSegueWithIdentifier:@"loginSuccess" sender:self];
         }
     }];
@@ -142,13 +149,14 @@ static NSInteger const timeLimit = 10;
     @weakify(self);
     return [[[[[RACSignal interval:1.0f onScheduler:[RACScheduler mainThreadScheduler]] take:timeLimit] startWith:[NSDate date]] doNext:^(NSDate *date) {
         @strongify(self);
+        NSLog(@"倒计时: %f", self.remainTime);
         if (self.remainTime == 0) {
             [self.countDownBtn setTitle:@"重新发送" forState:UIControlStateNormal];
             [self.countDownBtn setTitle:@"重新发送" forState:UIControlStateDisabled];
-            self.countDownBtn.enabled = YES;
+//            self.countDownBtn.enabled = YES;
         } else {
             [self.countDownBtn setTitle:[NSString stringWithFormat:@"%ld", (long)self.remainTime--] forState:UIControlStateDisabled];
-            self.countDownBtn.enabled = NO;// 倒计时期间不可点击
+//            self.countDownBtn.enabled = NO;// 倒计时期间不可点击
         }
     }] takeUntil:self.rac_willDeallocSignal];
 }
@@ -170,7 +178,10 @@ typedef void (^RWSignInResponse)(BOOL);
                   password:(NSString *)password
                   complete:(RWSignInResponse)completeBlock {
     //调接口
-    completeBlock(YES);
+    // 模仿网络延迟
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        completeBlock(YES);
+    });
 }
 
 - (void)didReceiveMemoryWarning {

@@ -12,5 +12,6 @@ target 'RACDemo' do
   
   pod 'ReactiveCocoa', '~> 2.5’, :inhibit_warnings => true
   pod 'Toast', '~> 3.0'
+  pod 'SVProgressHUD', '~> 2.2.2'
 
 end

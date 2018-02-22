@@ -6,16 +6,19 @@ PODS:
   - ReactiveCocoa/no-arc (2.5)
   - ReactiveCocoa/UI (2.5):
     - ReactiveCocoa/Core
+  - SVProgressHUD (2.2.2)
   - Toast (3.1.0)
 
 DEPENDENCIES:
   - ReactiveCocoa (~> 2.5)
+  - SVProgressHUD (~> 2.2.2)
   - Toast (~> 3.0)
 
 SPEC CHECKSUMS:
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
   Toast: 14a93686d6c8bfe2727afd342414e35660a8a1f3
 
-PODFILE CHECKSUM: 8f2e501cfed2d32aa069ae7a488bd0c261809cf2
+PODFILE CHECKSUM: 9360cf2aff66dfc62f3bcfc64e6776c376a99a2b
 
 COCOAPODS: 1.2.1

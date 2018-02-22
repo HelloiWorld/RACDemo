@@ -11,10 +11,17 @@
 
 @interface LoginViewModel : NSObject
 
-@property (nonatomic, copy) NSString *phoneNum;
-@property (nonatomic, copy) NSString *verifyCodeNum;
-@property (nonatomic, assign) BOOL isUserProtocolChecked;
+@property (nonatomic, copy, readonly) NSString *phoneNum;
+@property (nonatomic, copy, readonly) NSString *verifyCodeNum;
+@property (nonatomic, assign, readonly) BOOL isUserProtocolChecked;
+@property (nonatomic, assign, readonly) NSTimeInterval remainTime;
 
-- (RACCommand *)loginCommand;
+@property (nonatomic, strong, readonly) RACSignal *validUsernameSignal;
+@property (nonatomic, strong, readonly) RACSignal *validPasswordSignal;
+@property (nonatomic, strong, readonly) RACSignal *signUpActiveSignal;
+
+@property (nonatomic, strong, readonly) RACCommand* sendSMSCodeCommand;
+@property (nonatomic, strong, readonly) RACCommand* protocolCheckedCommand;
+@property (nonatomic, strong, readonly) RACSignal* signInSignal;
 
 @end
